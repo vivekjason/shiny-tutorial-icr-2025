@@ -1,0 +1,177 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Shiny Turorials",
+    "section": "",
+    "text": "Goal. Stand up the smallest shinydashboard app that proves UI ↔︎ server wiring.\n\n\n\nCreate a new project folder: dad_onepage/ and open it in your IDE.\nCreate a new R script named demo1_anatomy_min.R.\nAdd packages at top: load shiny and shinydashboard.\nMake a UI skeleton with dashboardPage(), containing a header, sidebar, and body.\nIn the header, set the title to CVD Risk Estimator.\nIn the sidebar, leave it empty for now. (You’ll add inputs in Tutorial 2.)\nIn the body, add a single output placeholder (e.g., textOutput(\"hello\")).\nHint: Output IDs are strings that must match in server.\nDefine the server function with the standard signature; leave it minimal.\nRender a text value into your output placeholder using a renderText(...) call.\nHint: output$&lt;id&gt; on the left, render on the right.\nStart the app with shinyApp(ui, server) and confirm it loads.\nRename the output ID in the UI, and update the server to match. Confirm it still works.\nOptional: Move the text output into the sidebar to see layout behavior.\n\n\n\n\n\nMental model: Shiny = reactivity & server; shinydashboard = layout shell.\nKeep IDs short, lowercase, snake_case (e.g., hello_text). Avoid dashes.\nPress F1 in RStudio with cursor on a function to get help quickly.\n\n\n\n\n\nShiny basics: https://shiny.posit.co/r/getstarted/shiny-basics/\nMastering Shiny (Ch. 1–2): https://mastering-shiny.org/\nShiny reference (outputs & render): https://shiny.posit.co/r/reference/shiny/latest/"
+  },
+  {
+    "objectID": "index.html#steps-try-first",
+    "href": "index.html#steps-try-first",
+    "title": "Shiny Turorials",
+    "section": "",
+    "text": "Create a new project folder: dad_onepage/ and open it in your IDE.\nCreate a new R script named demo1_anatomy_min.R.\nAdd packages at top: load shiny and shinydashboard.\nMake a UI skeleton with dashboardPage(), containing a header, sidebar, and body.\nIn the header, set the title to CVD Risk Estimator.\nIn the sidebar, leave it empty for now. (You’ll add inputs in Tutorial 2.)\nIn the body, add a single output placeholder (e.g., textOutput(\"hello\")).\nHint: Output IDs are strings that must match in server.\nDefine the server function with the standard signature; leave it minimal.\nRender a text value into your output placeholder using a renderText(...) call.\nHint: output$&lt;id&gt; on the left, render on the right.\nStart the app with shinyApp(ui, server) and confirm it loads.\nRename the output ID in the UI, and update the server to match. Confirm it still works.\nOptional: Move the text output into the sidebar to see layout behavior."
+  },
+  {
+    "objectID": "index.html#hints-tips",
+    "href": "index.html#hints-tips",
+    "title": "Shiny Turorials",
+    "section": "",
+    "text": "Mental model: Shiny = reactivity & server; shinydashboard = layout shell.\nKeep IDs short, lowercase, snake_case (e.g., hello_text). Avoid dashes.\nPress F1 in RStudio with cursor on a function to get help quickly."
+  },
+  {
+    "objectID": "index.html#reading",
+    "href": "index.html#reading",
+    "title": "Shiny Turorials",
+    "section": "",
+    "text": "Shiny basics: https://shiny.posit.co/r/getstarted/shiny-basics/\nMastering Shiny (Ch. 1–2): https://mastering-shiny.org/\nShiny reference (outputs & render): https://shiny.posit.co/r/reference/shiny/latest/"
+  },
+  {
+    "objectID": "index.html#steps-try-first-1",
+    "href": "index.html#steps-try-first-1",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo2_inputs_outputs_min.R.\nCopy your Tutorial 1 UI structure; keep the header and empty sidebar/body.\nIn the sidebar, add a dropdown: selectInput(\"sex\", \"Sex\", ...) with two choices.\nIn the body, add a text area to display the current selection.\nIn server, read input$sex and display it.\nHint: Concatenate a label with the input value.\nRun and toggle the dropdown; verify the text changes live.\nChange the default selection and confirm initial state updates.\nAdd a helper label above the output (e.g., p(\"Selected:\")) to teach semantics.\nSwitch the output widget (verbatimTextOutput vs textOutput); notice any styling changes.\nIntroduce a second input (e.g., numericInput(\"age\", ...)) and do not wire it yet.\nPlan naming: agree on a simple convention for inputs (sex, age) and outputs (echo, hello_text). Write it down in comments.\nSave and commit (if using git): message “demo2 wiring”."
+  },
+  {
+    "objectID": "index.html#hints-tips-1",
+    "href": "index.html#hints-tips-1",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nMatch output IDs: UI’s \"echo\" ↔︎ server’s output$echo.\nRenderers are typed: text, print, plot, table, image, UI, etc.\nDon’t over-abstract early. Keep it literal for teaching."
+  },
+  {
+    "objectID": "index.html#reading-1",
+    "href": "index.html#reading-1",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nInput widgets gallery: https://shiny.posit.co/r/gallery/widgets/\nReactivity overview: https://shiny.posit.co/r/articles/build/reactivity-overview/\nRender functions reference: https://shiny.posit.co/r/reference/shiny/latest/"
+  },
+  {
+    "objectID": "index.html#steps-try-first-2",
+    "href": "index.html#steps-try-first-2",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo3_layout_dashboard.R.\nAdd dashboardHeader(titleWidth = 250) to avoid truncation.\nKeep the selectInput(\"sex\", ...) from Tutorial 2.\nAdd a numericInput(\"age\", ...) in the sidebar.\nIn the body, first row: add a valueBoxOutput(\"kpi\", width = 4).\nIn the body, second row: add a box(title = \"Main area\", solidHeader = TRUE, width = 12).\nIn server, send a simple value into the kpi (e.g., the entered age with a label).\nHint: renderValueBox(valueBox(...)).\nRun and tweak titleWidth to see header behavior (e.g., 300).\nExperiment with width values to understand Bootstrap’s 12-column grid.\nAdd a paragraph in the box to mark where charts/tables will live.\nConsider putting the valueBox inside a box. Decide which you prefer visually.\nSave changes with a note: “demo3 layout + KPI”."
+  },
+  {
+    "objectID": "index.html#hints-tips-2",
+    "href": "index.html#hints-tips-2",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nUse fluidRow() to organize horizontal groups.\nvalueBox(color=...) is separate from box(status=...) (colors later in Tutorial 7).\nKeep early layouts boring—clarity beats cleverness."
+  },
+  {
+    "objectID": "index.html#reading-2",
+    "href": "index.html#reading-2",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nshinydashboard guide: https://rstudio.github.io/shinydashboard/\nValue boxes & info boxes: https://rstudio.github.io/shinydashboard/structure.html#value-boxes\nShiny layout guide: https://shiny.posit.co/r/articles/build/layout-guide/"
+  },
+  {
+    "objectID": "index.html#steps-try-first-3",
+    "href": "index.html#steps-try-first-3",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo4_reactivity_filtering.R.\nAt the top, generate tiny demo data (sex + sysbp). Keep it inside the script.\nIn the sidebar, add selectInput(\"select_sex\", \"Sex\", c(\"All\",\"Male\",\"Female\"), \"All\").\nIn the body, add a plotOutput(\"hist\", height = 320) for the histogram.\nIn server, define data_filtered &lt;- reactive({ ... }) using the input.\nImplement the “All” pattern: if “All”, return the unfiltered data.\nDraw the histogram of sysbp, filling by sex.\nHint: Set binwidth = 5 to start.\nRun and change the filter. Confirm the plot updates instantly.\nAdd a second input (e.g., a sliderInput for sysbp range); plan where filtering logic should live.\nRefactor: keep all filtering in the one reactive() so charts/tables can reuse it later.\nComment the reactive: note what inputs it depends on.\nCommit: “demo4 reactive filter + plot”."
+  },
+  {
+    "objectID": "index.html#hints-tips-3",
+    "href": "index.html#hints-tips-3",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nKeep reusable reactives for data prepared for the view layer.\nUse req() inside renderers if you ever gate against missing inputs.\nAvoid deriving columns in the plot call; precompute in the reactive if needed."
+  },
+  {
+    "objectID": "index.html#reading-3",
+    "href": "index.html#reading-3",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nReactivity concepts: https://shiny.posit.co/r/articles/build/reactivity-overview/\nMastering Shiny (Reactive): https://mastering-shiny.org/reactivity-basics.html\ndplyr filter: https://dplyr.tidyverse.org/reference/filter.html"
+  },
+  {
+    "objectID": "index.html#steps-try-first-4",
+    "href": "index.html#steps-try-first-4",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo5_display_components.R.\nKeep the tiny df and select_sex from Tutorial 4.\nIn body row 1, add valueBoxOutput(\"kpi\", width = 4).\nIn body row 2, add box(plotOutput(\"hist\", height = 280), width = 12).\nIn body row 3, add box(DT::DTOutput(\"tbl\"), width = 12).\nIn server, reuse data_filtered() from Tutorial 4.\nKPI idea: show nrow(data_filtered()) for now (simple count).\nPlot: reuse the histogram from Tutorial 4; keep it minimal.\nTable: render the filtered data with DT::datatable(); set pageLength = 8.\nStatic note: add p(\"Static note: histogram uses binwidth = 5\") under the components.\nDynamic note: add textOutput(\"dynamic_note\") and display current select_sex.\nDecide where you’d eventually put color logic (e.g., thresholds) for KPIs."
+  },
+  {
+    "objectID": "index.html#hints-tips-4",
+    "href": "index.html#hints-tips-4",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nDT’s scrollX = TRUE helps wide data; avoid 100 columns on screen.\nKeep “static vs dynamic” messaging clear to learners.\nUse labs() early to build labeling habits."
+  },
+  {
+    "objectID": "index.html#reading-4",
+    "href": "index.html#reading-4",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nDT package: https://rstudio.github.io/DT/\nggplot2 basics: https://ggplot2.tidyverse.org/\nOutputs overview: https://shiny.posit.co/r/articles/build/outputs/"
+  },
+  {
+    "objectID": "index.html#steps-try-first-5",
+    "href": "index.html#steps-try-first-5",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo6_interactions_min.R.\nKeep the tiny df and select_sex filter.\nAdd a button in the sidebar: actionButton(\"about\", \"About model\").\nAdd a download in the sidebar: downloadButton(\"dl\", \"Download filtered CSV\").\nIn the body, keep DTOutput(\"tbl\") to preview data to be downloaded.\nIn server, show a notification whenever select_sex changes.\nHint: observeEvent(input$select_sex, ...).\nAdd a modal that opens when “About model” is clicked.\nHint: Use showModal(modalDialog(...)).\nImplement a CSV download for data_filtered() with downloadHandler(...).\nAdd a reset button (or link) that sets select_sex back to \"All\" via updateSelectInput(...).\nKeep messages short (1–2 lines) so they don’t distract from content.\nTest all three interactions in combination.\nCommit: “demo6 interactions”."
+  },
+  {
+    "objectID": "index.html#hints-tips-5",
+    "href": "index.html#hints-tips-5",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nUse notifications for state changes; modals for explanations or confirmations.\nKeep download filenames simple: prefix + date.\nAlways prefer filtered data for downloads (what users see is what they get)."
+  },
+  {
+    "objectID": "index.html#reading-5",
+    "href": "index.html#reading-5",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nNotifications: https://shiny.posit.co/r/reference/shiny/latest/showNotification.html\nModal dialogs: https://shiny.posit.co/r/reference/shiny/latest/modalDialog.html\nDownload handlers: https://shiny.posit.co/r/articles/build/download.html"
+  },
+  {
+    "objectID": "index.html#steps-try-first-6",
+    "href": "index.html#steps-try-first-6",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo7_theme_builtin.R.\nIn dashboardPage(), set skin = \"green\" (or try others later).\nAdd a header titleWidth that fits your title (e.g., 260–300).\nIn the body, create two box() components with different status values (\"primary\", \"warning\").\nHint: Use solidHeader = TRUE.\nAdd a valueBoxOutput(\"kpi\", width = 4) and plan a color (e.g., \"green\").\nExplore the allowed valueBox(color=...) values and pick one that reads clearly.\nCompare valueBox(color=...) vs box(status=...): where do these colors appear?\nTry another skin (e.g., \"red\"); note which layout regions change color.\nDocument a color scheme for your course (which statuses mean what).\nKeep color usage consistent across KPIs and boxes.\nAvoid overusing strong colors (e.g., danger) unless signaling error/alert.\nCommit: “demo7 theming (built-in)”."
+  },
+  {
+    "objectID": "index.html#hints-tips-6",
+    "href": "index.html#hints-tips-6",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nSkins affect header/sidebar; statuses affect box headers.\nvalueBox colors use a predefined palette; pick legible combos.\nSave CSS for later if you still need polish."
+  },
+  {
+    "objectID": "index.html#reading-6",
+    "href": "index.html#reading-6",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nSkins & colors: https://rstudio.github.io/shinydashboard/appearance.html\nIcons: https://shiny.posit.co/r/reference/shiny/latest/icon.html\nLayout guide: https://shiny.posit.co/r/articles/build/layout-guide/"
+  },
+  {
+    "objectID": "index.html#steps-try-first-7",
+    "href": "index.html#steps-try-first-7",
+    "title": "Shiny Turorials",
+    "section": "Steps (try-first)",
+    "text": "Steps (try-first)\n\nCreate demo8_final_dadr_onepage.R in the same folder.\nAdd plain library calls: shiny, shinydashboard, and (for cleaning.R) readr, dplyr, tidyr.\nAt the top, source(\"cleaning.R\", local = TRUE). Confirm that it creates df with required fields.\nUse dashboardPage(skin = \"blue\", ...) as your shell.\nIn the sidebar (width 300), add Risk Inputs with the rc_ IDs:\nrc_sex, rc_smoking, rc_diabetes, rc_famhx, rc_age, rc_sysbp, rc_totchol, rc_hdl, rc_cd4.\nFor numeric inputs, set defaults to your data medians (see your target app).\nIn the body, add a box(title = \"Predicted Risk ()\", solidHeader = TRUE, width = 12).\nInside the box, place a valueBoxOutput(\"risk_box\") and a textOutput(\"risk_text\") below it.\nIn server, compute the same risk twice: once for the KPI, once for the interpretation (keep explicit for teaching).\nClamp risk to [0, 0.999]. Pick KPI color rules: red ≥20, yellow ≥10, else green.\nAdd a one‑line model summary in the UI (terms used), under the interpretation.\nOptional polish: link a custom.css via tags$head(tags$link(...)) — only if you truly need it.\nRun and confirm all inputs drive both outputs; test extreme values.\nPlan deployment: Shinylive export vs shinyapps.io.\nCommit: “demo8 final one‑page”."
+  },
+  {
+    "objectID": "index.html#hints-tips-7",
+    "href": "index.html#hints-tips-7",
+    "title": "Shiny Turorials",
+    "section": "Hints & tips",
+    "text": "Hints & tips\n\nExplicit formulas beat abstractions when teaching (students can see every term).\nDuplicating the calc twice (KPI + text) helps show independent outputs sharing the same inputs.\nCSV‑first data loading works great for Shinylive (static hosting)."
+  },
+  {
+    "objectID": "index.html#reading-7",
+    "href": "index.html#reading-7",
+    "title": "Shiny Turorials",
+    "section": "Reading",
+    "text": "Reading\n\nShinylive export: https://github.com/posit-dev/r-shinylive\nshinyapps.io deploy: https://docs.posit.co/shinyapps.io/getting_started/\nShiny articles (build & deploy): https://shiny.posit.co/r/articles/"
+  }
+]
