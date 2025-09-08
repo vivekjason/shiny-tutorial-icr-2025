@@ -1,12 +1,12 @@
 ---
-title: "Shiny Turorials"
-subtitle: "Try-first instructions with hints & reading — navigate via the TOC on the right"
+title: "Shiny Tutorials — Day 2 (delta-only)"
+subtitle: "Continue from Day 1; make these small changes"
 format:
   html:
     toc: true
-    toc-location: left
+    toc-location: right
     toc-depth: 2
-    number-sections: FALSE
+    number-sections: false
     code-copy: true
     code-fold: false
     smooth-scroll: false
@@ -14,252 +14,167 @@ freeze: true
 execute:
   echo: false
 ---
-# Tutorial 1 — Shiny anatomy: UI, server, connection
 
-**Goal.** Stand up the smallest `shinydashboard` app that proves UI ↔ server wiring.
+# 1) Risk box (explicit calculation, single output)
 
-## Steps (try-first)
-1. **Create a new project folder**: `dad_onepage/` and open it in your IDE.
-2. **Create a new R script** named `demo1_anatomy_min.R`.
-3. **Add packages** at top: load `shiny` and `shinydashboard`.
-4. **Make a UI skeleton** with `dashboardPage()`, containing a header, sidebar, and body.
-5. In the **header**, set the title to `CVD Risk Estimator`.
-6. In the **sidebar**, leave it **empty for now**. (You’ll add inputs in Tutorial 2.)
-7. In the **body**, add a single output placeholder (e.g., `textOutput("hello")`).  
-   *Hint:* Output IDs are strings that must match in server.
-8. **Define the server function** with the standard signature; leave it minimal.
-9. **Render a text** value into your output placeholder using a `renderText(...)` call.  
-   *Hint:* `output$<id>` on the left, `render` on the right.
-10. **Start the app** with `shinyApp(ui, server)` and confirm it loads.
-11. **Rename the output ID** in the UI, and update the server to match. Confirm it still works.
-12. **Optional:** Move the text output into the sidebar to see layout behavior.
+**Matches:** Demo 1 (valueBox explicit)
+**Goal.** Show the **predicted CVD risk** as a percentage using the full D\:A\:D formula computed **inside** `renderValueBox()`.
 
-## Hints & tips
-- **Mental model:** Shiny = reactivity & server; shinydashboard = layout shell.
-- Keep IDs **short, lowercase, snake_case** (e.g., `hello_text`). Avoid dashes.
-- Press **F1** in RStudio with cursor on a function to get help quickly.
+### Do this
 
-## Reading
-- Shiny basics: https://shiny.posit.co/r/getstarted/shiny-basics/
-- *Mastering Shiny* (Ch. 1–2): https://mastering-shiny.org/
-- Shiny reference (outputs & render): https://shiny.posit.co/r/reference/shiny/latest/
+* **Sidebar**
 
----
+  * Use **radio buttons** for categorical inputs:
 
-# Tutorial 2 — Inputs → Outputs (reactive wiring)
+    * `select_sex` (Male=1, Female=0)
+    * `select_smk_curr` (Yes/No), `select_smk_ex` (Yes/No)
+  * Keep **selects** for `select_dm` (Diabetes) and `select_fhx` (Family history).
+  * Make **age** a **slider** `select_age` (18–100).
+  * Keep **numeric** for SBP, Total Chol, HDL, CD4.
+* **Body**
 
-**Goal.** Add one input in the **sidebar** and echo it in the **body**.
+  * Add a `box(title="Predicted Risk", ...)` with `valueBoxOutput("risk_box")`.
+  * (Optional) Add `verbatimTextOutput("risk_text")` above for a simple text readout.
+* **Server**
 
-## Steps (try-first)
-1. **Create** `demo2_inputs_outputs_min.R`.
-2. **Copy** your Tutorial 1 UI structure; keep the header and empty sidebar/body.
-3. In the **sidebar**, add a dropdown: `selectInput("sex", "Sex", ...)` with two choices.
-4. In the **body**, add a text area to display the current selection.
-5. In **server**, read `input$sex` and display it.  
-   *Hint:* Concatenate a label with the input value.
-6. **Run** and toggle the dropdown; verify the text changes live.
-7. **Change the default** selection and confirm initial state updates.
-8. **Add a helper label** above the output (e.g., `p("Selected:")`) to teach semantics.
-9. **Switch** the output widget (`verbatimTextOutput` vs `textOutput`); notice any styling changes.
-10. **Introduce a second input** (e.g., `numericInput("age", ...)`) and **do not wire it** yet.
-11. **Plan naming**: agree on a simple convention for inputs (`sex`, `age`) and outputs (`echo`, `hello_text`). Write it down in comments.
-12. **Save** and commit (if using git): message “demo2 wiring”.
+  * Implement **one output only** for now:
+    `output$risk_box <- renderValueBox({ read inputs → compute risk → percent → color by threshold → valueBox(...) })`.
+  * Keep the **entire formula inline** here (no helpers yet).
 
-## Hints & tips
-- Match **output IDs**: UI’s `"echo"` ↔ server’s `output$echo`.
-- Renderers are **typed**: text, print, plot, table, image, UI, etc.
-- Don’t over-abstract early. Keep it literal for teaching.
+**Why:** This keeps the calculation visible for teaching and proves the output pipeline.
 
-## Reading
-- Input widgets gallery: https://shiny.posit.co/r/gallery/widgets/
-- Reactivity overview: https://shiny.posit.co/r/articles/build/reactivity-overview/
-- Render functions reference: https://shiny.posit.co/r/reference/shiny/latest/
+**Refs:** Value boxes [https://rstudio.github.io/shinydashboard/structure.html#value-boxes](https://rstudio.github.io/shinydashboard/structure.html#value-boxes) • Render functions [https://shiny.posit.co/r/reference/shiny/latest/](https://shiny.posit.co/r/reference/shiny/latest/) • Widgets gallery [https://shiny.posit.co/r/gallery/widgets/](https://shiny.posit.co/r/gallery/widgets/)
 
 ---
 
-# Tutorial 3 — Layout with {shinydashboard}
+# 2) Consolidate with a `reactive()` (single source of truth)
 
-**Goal.** Build the core layout: header / sidebar / body + rows, boxes, and a KPI.
+**Matches:** Demo 2 (unify via reactive)
+**Goal.** Compute the numeric risk **once** in a `reactive()` and **reuse** it.
 
-## Steps (try-first)
-1. **Create** `demo3_layout_dashboard.R`.
-2. Add `dashboardHeader(titleWidth = 250)` to avoid truncation.
-3. **Keep** the `selectInput("sex", ...)` from Tutorial 2.
-4. **Add** a `numericInput("age", ...)` in the **sidebar**.
-5. In the **body**, first row: add a `valueBoxOutput("kpi", width = 4)`.
-6. In the **body**, second row: add a `box(title = "Main area", solidHeader = TRUE, width = 12)`.
-7. In **server**, send a simple value into the `kpi` (e.g., the entered age with a label).  
-   *Hint:* `renderValueBox(valueBox(...))`.
-8. **Run** and tweak `titleWidth` to see header behavior (e.g., 300).
-9. **Experiment** with `width` values to understand Bootstrap’s 12-column grid.
-10. **Add** a paragraph in the box to mark where charts/tables will live.
-11. **Consider** putting the `valueBox` inside a `box`. Decide which you prefer visually.
-12. **Save** changes with a note: “demo3 layout + KPI”.
+### Do this
 
-## Hints & tips
-- Use `fluidRow()` to organize horizontal groups.
-- `valueBox(color=...)` is separate from `box(status=...)` (colors later in Tutorial 7).
-- Keep early layouts **boring**—clarity beats cleverness.
+* **Server**
 
-## Reading
-- shinydashboard guide: https://rstudio.github.io/shinydashboard/
-- Value boxes & info boxes: https://rstudio.github.io/shinydashboard/structure.html#value-boxes
-- Shiny layout guide: https://shiny.posit.co/r/articles/build/layout-guide/
+  * Add `risk_val <- reactive({ /* read select_* inputs; compute and return risk in [0,1] */ })`.
+  * Update the risk box to use `pct <- round(100 * risk_val(), 1)`.
+  * Add interpretation line: `output$risk_text <- renderText({ /* threshold on pct */ })`.
+* **Body**
+
+  * If not present yet, add `textOutput("risk_text")` right under the risk box.
+
+**Why:** Avoids duplication and shows how multiple outputs can depend on the same calculation.
+
+**Refs:** Reactivity overview [https://shiny.posit.co/r/articles/build/reactivity-overview/](https://shiny.posit.co/r/articles/build/reactivity-overview/) • Mastering Shiny (Reactivity) [https://mastering-shiny.org/reactivity-basics.html](https://mastering-shiny.org/reactivity-basics.html)
 
 ---
 
-# Tutorial 4 — Reactivity & Filtering
+# 3) Built-in theming + tiny CSS (optional)
 
-**Goal.** Create a `reactive()` that filters data and draw from it.
+**Matches:** Demo 3 (skin + minimal CSS)
+**Goal.** Use **shinydashboard** skins first; add only **tiny** CSS.
 
-## Steps (try-first)
-1. **Create** `demo4_reactivity_filtering.R`.
-2. At the top, generate tiny demo data (sex + sysbp). Keep it **inside** the script.
-3. In the **sidebar**, add `selectInput("select_sex", "Sex", c("All","Male","Female"), "All")`.
-4. In the **body**, add a `plotOutput("hist", height = 320)` for the histogram.
-5. In **server**, define `data_filtered <- reactive({ ... })` using the input.
-6. Implement the **“All” pattern**: if “All”, return the unfiltered data.
-7. Draw the histogram of `sysbp`, filling by `sex`.  
-   *Hint:* Set `binwidth = 5` to start.
-8. **Run** and change the filter. Confirm the plot updates instantly.
-9. Add a **second input** (e.g., a `sliderInput` for `sysbp` range); plan where filtering logic should live.
-10. **Refactor**: keep **all** filtering in the one `reactive()` so charts/tables can reuse it later.
-11. **Comment** the reactive: note what inputs it depends on.
-12. Commit: “demo4 reactive filter + plot”.
+### Do this
 
-## Hints & tips
-- Keep **reusable reactives** for data prepared for the view layer.
-- Use `req()` inside renderers if you ever gate against missing inputs.
-- Avoid deriving columns in the plot call; precompute in the reactive if needed.
+* **UI**
 
-## Reading
-- Reactivity concepts: https://shiny.posit.co/r/articles/build/reactivity-overview/
-- *Mastering Shiny* (Reactive): https://mastering-shiny.org/reactivity-basics.html
-- dplyr filter: https://dplyr.tidyverse.org/reference/filter.html
+  * In `dashboardPage()`, set `skin = "green"` (try a few).
+  * In the risk box, add `status = "primary"` and `solidHeader = TRUE`.
+  * Make the header fit: `dashboardHeader(titleWidth = 270)` (adjust as needed).
+* **Body head**
+
+  * (Optional) Add tiny CSS:
+    `tags$head(tags$style(HTML(".small-muted{font-size:90%;color:#555}")))`
+  * Use it on a one-line model note under the outputs.
+
+**Why:** Consistent color without diving into custom CSS.
+
+**Refs:** Appearance/skins [https://rstudio.github.io/shinydashboard/appearance.html](https://rstudio.github.io/shinydashboard/appearance.html) • Layout guide [https://shiny.posit.co/r/articles/build/layout-guide/](https://shiny.posit.co/r/articles/build/layout-guide/)
 
 ---
 
-# Tutorial 5 — Display components: plots, tables, value boxes
+# 4) “Estimate risk” button + CSV download
 
-**Goal.** Present filtered data in three ways and separate static vs dynamic text.
+**Matches:** Demo 4 (eventReactive + download)
+**Goal.** Compute **only when clicked** and offer a **CSV** of the current inputs (plus last risk).
 
-## Steps (try-first)
-1. **Create** `demo5_display_components.R`.
-2. Keep the tiny `df` and `select_sex` from Tutorial 4.
-3. In **body row 1**, add `valueBoxOutput("kpi", width = 4)`.
-4. In **body row 2**, add `box(plotOutput("hist", height = 280), width = 12)`.
-5. In **body row 3**, add `box(DT::DTOutput("tbl"), width = 12)`.
-6. In **server**, reuse `data_filtered()` from Tutorial 4.
-7. **KPI idea:** show `nrow(data_filtered())` for now (simple count).
-8. **Plot:** reuse the histogram from Tutorial 4; keep it minimal.
-9. **Table:** render the filtered data with `DT::datatable()`; set `pageLength = 8`.
-10. **Static note:** add `p("Static note: histogram uses binwidth = 5")` under the components.
-11. **Dynamic note:** add `textOutput("dynamic_note")` and display current `select_sex`.
-12. Decide where you’d eventually put **color logic** (e.g., thresholds) for KPIs.
+### Do this
 
-## Hints & tips
-- DT’s `scrollX = TRUE` helps wide data; avoid 100 columns on screen.
-- Keep “static vs dynamic” messaging clear to learners.
-- Use `labs()` early to build labeling habits.
+* **Sidebar**
 
-## Reading
-- DT package: https://rstudio.github.io/DT/
-- ggplot2 basics: https://ggplot2.tidyverse.org/
-- Outputs overview: https://shiny.posit.co/r/articles/build/outputs/
+  * Add `actionButton("estimate", "Estimate risk", icon = icon("play"))`.
+* **Server**
+
+  * Change `risk_val <- reactive({...})` to
+    `risk_val <- eventReactive(input$estimate, { /* compute risk */ }, ignoreInit = TRUE)`.
+  * Show a placeholder in the risk box **before first click** (e.g., “—” with info icon).
+  * Add `downloadHandler` to export a **1-row CSV** with all **current** `select_*` inputs and the last `risk_pct`.
+* **Body**
+
+  * Add `downloadButton("dl_inputs", "Download current inputs (CSV)")` below the outputs.
+
+**Why:** Great for teaching “compute on demand” and reproducible exports.
+
+**Refs:** `eventReactive` [https://shiny.posit.co/r/reference/shiny/latest/eventReactive.html](https://shiny.posit.co/r/reference/shiny/latest/eventReactive.html) • Downloads [https://shiny.posit.co/r/articles/build/download.html](https://shiny.posit.co/r/articles/build/download.html)
 
 ---
 
-# Tutorial 6 — Interactions: notifications, modals, downloads
+# 5) Tabs + Plotly + DT
 
-**Goal.** Add 3 interaction primitives without complicating UI.
+**Matches:** Demo 5 (tabs + plotly + datatable)
+**Goal.** Add tabs (“Risk” and “Explore”). Keep the calculator; show a chart and a table.
 
-## Steps (try-first)
-1. **Create** `demo6_interactions_min.R`.
-2. Keep the tiny `df` and `select_sex` filter.
-3. **Add a button** in the sidebar: `actionButton("about", "About model")`.
-4. **Add a download** in the sidebar: `downloadButton("dl", "Download filtered CSV")`.
-5. In the **body**, keep `DTOutput("tbl")` to preview data to be downloaded.
-6. In **server**, show a **notification** whenever `select_sex` changes.  
-   *Hint:* `observeEvent(input$select_sex, ...)`.
-7. Add a **modal** that opens when “About model” is clicked.  
-   *Hint:* Use `showModal(modalDialog(...))`.
-8. Implement a **CSV download** for `data_filtered()` with `downloadHandler(...)`.
-9. Add a **reset** button (or link) that sets `select_sex` back to `"All"` via `updateSelectInput(...)`.
-10. Keep **messages short** (1–2 lines) so they don’t distract from content.
-11. Test all three interactions in combination.
-12. Commit: “demo6 interactions”.
+### Do this
 
-## Hints & tips
-- Use notifications for **state changes**; modals for **explanations** or **confirmations**.
-- Keep download filenames simple: prefix + date.
-- Always prefer **filtered** data for downloads (what users see is what they get).
+* **Sidebar**
 
-## Reading
-- Notifications: https://shiny.posit.co/r/reference/shiny/latest/showNotification.html
-- Modal dialogs: https://shiny.posit.co/r/reference/shiny/latest/modalDialog.html
-- Download handlers: https://shiny.posit.co/r/articles/build/download.html
+  * Wrap controls in `sidebarMenu(id="tabs", menuItem("Risk Calculator", tabName="risk", icon=icon("heartbeat")), menuItem("Explore (Static)", tabName="explore", icon=icon("chart-line")))`.
+  * Keep inputs visible below the menu.
+* **Body**
 
----
+  * Add `tabItems()` with `tabItem(tabName="risk", ...)` and `tabItem(tabName="explore", ...)`.
+  * Move the **risk box + interpretation** into `"risk"`.
+  * In `"explore"`:
 
-# Tutorial 7 — Theming with shinydashboard (built‑in skins first)
+    * Box 1: `plotlyOutput("p1")` (age vs SBP scatter).
+    * Box 2: `plotlyOutput("p2")` (smoking counts).
+    * Box 3: `DTOutput("tbl")` (full dataset).
+* **Server**
 
-**Goal.** Apply built-in colors without custom CSS; learn status and color args.
+  * `p1`: simple ggplot scatter → `ggplotly()`.
+  * `p2`: derive “Current/Ex/Never” from your smoking flags and plot bars → `ggplotly()`.
+  * `tbl`: `datatable(df, options = list(pageLength = 10, scrollX = TRUE))`.
 
-## Steps (try-first)
-1. **Create** `demo7_theme_builtin.R`.
-2. In `dashboardPage()`, set `skin = "green"` (or try others later).
-3. Add a **header titleWidth** that fits your title (e.g., 260–300).
-4. In the **body**, create two `box()` components with different `status` values (`"primary"`, `"warning"`).  
-   *Hint:* Use `solidHeader = TRUE`.
-5. Add a `valueBoxOutput("kpi", width = 4)` and plan a **color** (e.g., `"green"`).
-6. Explore the **allowed `valueBox(color=...)` values** and pick one that reads clearly.
-7. Compare `valueBox(color=...)` vs `box(status=...)`: where do these colors appear?
-8. Try another **skin** (e.g., `"red"`); note which layout regions change color.
-9. Document a **color scheme** for your course (which statuses mean what).
-10. Keep color usage **consistent** across KPIs and boxes.
-11. Avoid overusing strong colors (e.g., `danger`) unless signaling error/alert.
-12. Commit: “demo7 theming (built-in)”.
+**Note on IDs:** Demo 5 uses `rc_*` IDs to mirror the final app. If you keep your `select_*` IDs, just use them consistently (or rename once).
 
-## Hints & tips
-- Skins affect **header/sidebar**; statuses affect **box headers**.
-- `valueBox` colors use a predefined palette; pick legible combos.
-- Save CSS for later if you still need polish.
-
-## Reading
-- Skins & colors: https://rstudio.github.io/shinydashboard/appearance.html
-- Icons: https://shiny.posit.co/r/reference/shiny/latest/icon.html
-- Layout guide: https://shiny.posit.co/r/articles/build/layout-guide/
+**Refs:** Plotly R [https://plotly.com/r/](https://plotly.com/r/) • DT docs [https://rstudio.github.io/DT/](https://rstudio.github.io/DT/) • shinydashboard structure [https://rstudio.github.io/shinydashboard/](https://rstudio.github.io/shinydashboard/)
 
 ---
 
-# Tutorial 8 — Final one‑page  calculato
+# 6) Deployment: minimal one-page (Shinylive & shinyapps.io)
 
-**Goal.** Assemble the final app: inputs on left,  risk on right; CSV-first via `cleaning.R`.
+**Matches:** Demo 6 (minimal deployable)
+**Goal.** Strip back to the **minimal one-page** risk calculator for hosting.
 
-## Steps (try-first)
-1. **Create** `demo8_final_dadr_onepage.R` in the same folder.
-2. Add **plain library calls**: `shiny`, `shinydashboard`, and (for `cleaning.R`) `readr`, `dplyr`, `tidyr`.
-3. At the top, `source("cleaning.R", local = TRUE)`. Confirm that it creates **`df`** with required fields.
-4. Use `dashboardPage(skin = "blue", ...)` as your shell.
-5. In the **sidebar** (width 300), add **Risk Inputs** with the `rc_` IDs:  
-   `rc_sex`, `rc_smoking`, `rc_diabetes`, `rc_famhx`, `rc_age`, `rc_sysbp`, `rc_totchol`, `rc_hdl`, `rc_cd4`.
-6. For numeric inputs, set defaults to your **data medians** (see your target app).
-7. In the **body**, add a `box(title = "Predicted Risk ()", solidHeader = TRUE, width = 12)`.
-8. Inside the box, place a `valueBoxOutput("risk_box")` and a `textOutput("risk_text")` below it.
-9. In **server**, compute the **same  risk** twice: once for the KPI, once for the interpretation (keep explicit for teaching).
-10. Clamp risk to `[0, 0.999]`. Pick KPI color rules: **red ≥20**, **yellow ≥10**, else **green**.
-11. Add a one‑line model summary in the UI (terms used), under the interpretation.
-12. **Optional polish:** link a `custom.css` via `tags$head(tags$link(...))` — only if you truly need it.
-13. **Run** and confirm all inputs drive both outputs; test extreme values.
-14. **Plan deployment**: Shinylive export vs shinyapps.io.
-15. Commit: “demo8 final one‑page ”.
+### Do this
 
-## Hints & tips
-- **Explicit formulas** beat abstractions when teaching (students can see every term).
-- Duplicating the calc twice (KPI + text) helps show **independent outputs** sharing the **same inputs**.
-- CSV‑first data loading works great for **Shinylive** (static hosting).
+* **Keep only**: `shiny`, `shinydashboard`, plus what `cleaning.R` needs (`readr`, `dplyr`, `tidyr`).
+* **One page**: sidebar with the 9 inputs; body with one `box` containing:
 
-## Reading
-- Shinylive export: https://github.com/posit-dev/r-shinylive
-- shinyapps.io deploy: https://docs.posit.co/shinyapps.io/getting_started/
-- Shiny articles (build & deploy): https://shiny.posit.co/r/articles/
+  * `valueBoxOutput("risk_box")`
+  * `textOutput("risk_text")`
+* **Compute twice** (value box + text) **explicitly** for teaching clarity.
+* **No tabs/plotly/DT** here.
+* **Shinylive:** ensure `cleaning.R` is **CSV-first**; bundle with r-shinylive workflow.
+* **shinyapps.io:** `rsconnect::deployApp()` after login.
+
+**Refs:** Shinylive [https://github.com/posit-dev/r-shinylive](https://github.com/posit-dev/r-shinylive) • shinyapps.io intro [https://docs.posit.co/shinyapps.io/getting\_started/](https://docs.posit.co/shinyapps.io/getting_started/)
+
+---
+
+## Quick guardrails for learners
+
+* **Consistent IDs:** If you start with `select_*`, stick with it (or rename once to `rc_*` when moving to the tabbed version).
+* **Numeric safety:** Coerce inputs and keep sensible mins for any `log(...)` terms (e.g., HDL > 0).
+* **Thresholds:** Document the red/yellow/green cutoffs near the risk display for clarity.
+

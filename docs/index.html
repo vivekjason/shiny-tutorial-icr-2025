@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Shiny Turorials</title>
+<title>Shiny Tutorials — Day 2 (delta-only)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,79 +69,37 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="floating">
+<body>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <nav id="TOC" role="doc-toc" class="toc-active">
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#tutorial-1-shiny-anatomy-ui-server-connection" id="toc-tutorial-1-shiny-anatomy-ui-server-connection" class="nav-link active" data-scroll-target="#tutorial-1-shiny-anatomy-ui-server-connection">Tutorial 1 — Shiny anatomy: UI, server, connection</a>
+  <li><a href="#risk-box-explicit-calculation-single-output" id="toc-risk-box-explicit-calculation-single-output" class="nav-link active" data-scroll-target="#risk-box-explicit-calculation-single-output">1) Risk box (explicit calculation, single output)</a></li>
+  <li><a href="#consolidate-with-a-reactive-single-source-of-truth" id="toc-consolidate-with-a-reactive-single-source-of-truth" class="nav-link" data-scroll-target="#consolidate-with-a-reactive-single-source-of-truth">2) Consolidate with a <code>reactive()</code> (single source of truth)</a></li>
+  <li><a href="#built-in-theming-tiny-css-optional" id="toc-built-in-theming-tiny-css-optional" class="nav-link" data-scroll-target="#built-in-theming-tiny-css-optional">3) Built-in theming + tiny CSS (optional)</a></li>
+  <li><a href="#estimate-risk-button-csv-download" id="toc-estimate-risk-button-csv-download" class="nav-link" data-scroll-target="#estimate-risk-button-csv-download">4) “Estimate risk” button + CSV download</a></li>
+  <li><a href="#tabs-plotly-dt" id="toc-tabs-plotly-dt" class="nav-link" data-scroll-target="#tabs-plotly-dt">5) Tabs + Plotly + DT</a></li>
+  <li><a href="#deployment-minimal-one-page-shinylive-shinyapps.io" id="toc-deployment-minimal-one-page-shinylive-shinyapps.io" class="nav-link" data-scroll-target="#deployment-minimal-one-page-shinylive-shinyapps.io">6) Deployment: minimal one-page (Shinylive &amp; shinyapps.io)</a>
   <ul class="collapse">
-  <li><a href="#steps-try-first" id="toc-steps-try-first" class="nav-link" data-scroll-target="#steps-try-first">Steps (try-first)</a></li>
-  <li><a href="#hints-tips" id="toc-hints-tips" class="nav-link" data-scroll-target="#hints-tips">Hints &amp; tips</a></li>
-  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-2-inputs-outputs-reactive-wiring" id="toc-tutorial-2-inputs-outputs-reactive-wiring" class="nav-link" data-scroll-target="#tutorial-2-inputs-outputs-reactive-wiring">Tutorial 2 — Inputs → Outputs (reactive wiring)</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-1" id="toc-steps-try-first-1" class="nav-link" data-scroll-target="#steps-try-first-1">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-1" id="toc-hints-tips-1" class="nav-link" data-scroll-target="#hints-tips-1">Hints &amp; tips</a></li>
-  <li><a href="#reading-1" id="toc-reading-1" class="nav-link" data-scroll-target="#reading-1">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-3-layout-with-shinydashboard" id="toc-tutorial-3-layout-with-shinydashboard" class="nav-link" data-scroll-target="#tutorial-3-layout-with-shinydashboard">Tutorial 3 — Layout with {shinydashboard}</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-2" id="toc-steps-try-first-2" class="nav-link" data-scroll-target="#steps-try-first-2">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-2" id="toc-hints-tips-2" class="nav-link" data-scroll-target="#hints-tips-2">Hints &amp; tips</a></li>
-  <li><a href="#reading-2" id="toc-reading-2" class="nav-link" data-scroll-target="#reading-2">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-4-reactivity-filtering" id="toc-tutorial-4-reactivity-filtering" class="nav-link" data-scroll-target="#tutorial-4-reactivity-filtering">Tutorial 4 — Reactivity &amp; Filtering</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-3" id="toc-steps-try-first-3" class="nav-link" data-scroll-target="#steps-try-first-3">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-3" id="toc-hints-tips-3" class="nav-link" data-scroll-target="#hints-tips-3">Hints &amp; tips</a></li>
-  <li><a href="#reading-3" id="toc-reading-3" class="nav-link" data-scroll-target="#reading-3">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-5-display-components-plots-tables-value-boxes" id="toc-tutorial-5-display-components-plots-tables-value-boxes" class="nav-link" data-scroll-target="#tutorial-5-display-components-plots-tables-value-boxes">Tutorial 5 — Display components: plots, tables, value boxes</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-4" id="toc-steps-try-first-4" class="nav-link" data-scroll-target="#steps-try-first-4">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-4" id="toc-hints-tips-4" class="nav-link" data-scroll-target="#hints-tips-4">Hints &amp; tips</a></li>
-  <li><a href="#reading-4" id="toc-reading-4" class="nav-link" data-scroll-target="#reading-4">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-6-interactions-notifications-modals-downloads" id="toc-tutorial-6-interactions-notifications-modals-downloads" class="nav-link" data-scroll-target="#tutorial-6-interactions-notifications-modals-downloads">Tutorial 6 — Interactions: notifications, modals, downloads</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-5" id="toc-steps-try-first-5" class="nav-link" data-scroll-target="#steps-try-first-5">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-5" id="toc-hints-tips-5" class="nav-link" data-scroll-target="#hints-tips-5">Hints &amp; tips</a></li>
-  <li><a href="#reading-5" id="toc-reading-5" class="nav-link" data-scroll-target="#reading-5">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-7-theming-with-shinydashboard-builtin-skins-first" id="toc-tutorial-7-theming-with-shinydashboard-builtin-skins-first" class="nav-link" data-scroll-target="#tutorial-7-theming-with-shinydashboard-builtin-skins-first">Tutorial 7 — Theming with shinydashboard (built‑in skins first)</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-6" id="toc-steps-try-first-6" class="nav-link" data-scroll-target="#steps-try-first-6">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-6" id="toc-hints-tips-6" class="nav-link" data-scroll-target="#hints-tips-6">Hints &amp; tips</a></li>
-  <li><a href="#reading-6" id="toc-reading-6" class="nav-link" data-scroll-target="#reading-6">Reading</a></li>
-  </ul></li>
-  <li><a href="#tutorial-8-final-onepage-calculato" id="toc-tutorial-8-final-onepage-calculato" class="nav-link" data-scroll-target="#tutorial-8-final-onepage-calculato">Tutorial 8 — Final one‑page calculato</a>
-  <ul class="collapse">
-  <li><a href="#steps-try-first-7" id="toc-steps-try-first-7" class="nav-link" data-scroll-target="#steps-try-first-7">Steps (try-first)</a></li>
-  <li><a href="#hints-tips-7" id="toc-hints-tips-7" class="nav-link" data-scroll-target="#hints-tips-7">Hints &amp; tips</a></li>
-  <li><a href="#reading-7" id="toc-reading-7" class="nav-link" data-scroll-target="#reading-7">Reading</a></li>
+  <li><a href="#quick-guardrails-for-learners" id="toc-quick-guardrails-for-learners" class="nav-link" data-scroll-target="#quick-guardrails-for-learners">Quick guardrails for learners</a></li>
   </ul></li>
   </ul>
 </nav>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Shiny Turorials</h1>
-<p class="subtitle lead">Try-first instructions with hints &amp; reading — navigate via the TOC on the right</p>
+<h1 class="title">Shiny Tutorials — Day 2 (delta-only)</h1>
+<p class="subtitle lead">Continue from Day 1; make these small changes</p>
 </div>
 
 
@@ -158,318 +116,170 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="tutorial-1-shiny-anatomy-ui-server-connection" class="level1">
-<h1>Tutorial 1 — Shiny anatomy: UI, server, connection</h1>
-<p><strong>Goal.</strong> Stand up the smallest <code>shinydashboard</code> app that proves UI ↔︎ server wiring.</p>
-<section id="steps-try-first" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create a new project folder</strong>: <code>dad_onepage/</code> and open it in your IDE.</li>
-<li><strong>Create a new R script</strong> named <code>demo1_anatomy_min.R</code>.</li>
-<li><strong>Add packages</strong> at top: load <code>shiny</code> and <code>shinydashboard</code>.</li>
-<li><strong>Make a UI skeleton</strong> with <code>dashboardPage()</code>, containing a header, sidebar, and body.</li>
-<li>In the <strong>header</strong>, set the title to <code>CVD Risk Estimator</code>.</li>
-<li>In the <strong>sidebar</strong>, leave it <strong>empty for now</strong>. (You’ll add inputs in Tutorial 2.)</li>
-<li>In the <strong>body</strong>, add a single output placeholder (e.g., <code>textOutput("hello")</code>).<br>
-<em>Hint:</em> Output IDs are strings that must match in server.</li>
-<li><strong>Define the server function</strong> with the standard signature; leave it minimal.</li>
-<li><strong>Render a text</strong> value into your output placeholder using a <code>renderText(...)</code> call.<br>
-<em>Hint:</em> <code>output$&lt;id&gt;</code> on the left, <code>render</code> on the right.</li>
-<li><strong>Start the app</strong> with <code>shinyApp(ui, server)</code> and confirm it loads.</li>
-<li><strong>Rename the output ID</strong> in the UI, and update the server to match. Confirm it still works.</li>
-<li><strong>Optional:</strong> Move the text output into the sidebar to see layout behavior.</li>
-</ol>
-</section>
-<section id="hints-tips" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips">Hints &amp; tips</h2>
+<section id="risk-box-explicit-calculation-single-output" class="level1">
+<h1>1) Risk box (explicit calculation, single output)</h1>
+<p><strong>Matches:</strong> Demo 1 (valueBox explicit) <strong>Goal.</strong> Show the <strong>predicted CVD risk</strong> as a percentage using the full D:A:D formula computed <strong>inside</strong> <code>renderValueBox()</code>.</p>
+<section id="do-this" class="level3">
+<h3 class="anchored" data-anchor-id="do-this">Do this</h3>
 <ul>
-<li><strong>Mental model:</strong> Shiny = reactivity &amp; server; shinydashboard = layout shell.</li>
-<li>Keep IDs <strong>short, lowercase, snake_case</strong> (e.g., <code>hello_text</code>). Avoid dashes.</li>
-<li>Press <strong>F1</strong> in RStudio with cursor on a function to get help quickly.</li>
-</ul>
-</section>
-<section id="reading" class="level2">
-<h2 class="anchored" data-anchor-id="reading">Reading</h2>
+<li><p><strong>Sidebar</strong></p>
 <ul>
-<li>Shiny basics: https://shiny.posit.co/r/getstarted/shiny-basics/</li>
-<li><em>Mastering Shiny</em> (Ch. 1–2): https://mastering-shiny.org/</li>
-<li>Shiny reference (outputs &amp; render): https://shiny.posit.co/r/reference/shiny/latest/</li>
+<li><p>Use <strong>radio buttons</strong> for categorical inputs:</p>
+<ul>
+<li><code>select_sex</code> (Male=1, Female=0)</li>
+<li><code>select_smk_curr</code> (Yes/No), <code>select_smk_ex</code> (Yes/No)</li>
+</ul></li>
+<li><p>Keep <strong>selects</strong> for <code>select_dm</code> (Diabetes) and <code>select_fhx</code> (Family history).</p></li>
+<li><p>Make <strong>age</strong> a <strong>slider</strong> <code>select_age</code> (18–100).</p></li>
+<li><p>Keep <strong>numeric</strong> for SBP, Total Chol, HDL, CD4.</p></li>
+</ul></li>
+<li><p><strong>Body</strong></p>
+<ul>
+<li>Add a <code>box(title="Predicted Risk", ...)</code> with <code>valueBoxOutput("risk_box")</code>.</li>
+<li>(Optional) Add <code>verbatimTextOutput("risk_text")</code> above for a simple text readout.</li>
+</ul></li>
+<li><p><strong>Server</strong></p>
+<ul>
+<li>Implement <strong>one output only</strong> for now: <code>output$risk_box &lt;- renderValueBox({ read inputs → compute risk → percent → color by threshold → valueBox(...) })</code>.</li>
+<li>Keep the <strong>entire formula inline</strong> here (no helpers yet).</li>
+</ul></li>
 </ul>
+<p><strong>Why:</strong> This keeps the calculation visible for teaching and proves the output pipeline.</p>
+<p><strong>Refs:</strong> Value boxes <a href="https://rstudio.github.io/shinydashboard/structure.html#value-boxes">https://rstudio.github.io/shinydashboard/structure.html#value-boxes</a> • Render functions <a href="https://shiny.posit.co/r/reference/shiny/latest/">https://shiny.posit.co/r/reference/shiny/latest/</a> • Widgets gallery <a href="https://shiny.posit.co/r/gallery/widgets/">https://shiny.posit.co/r/gallery/widgets/</a></p>
 <hr>
 </section>
 </section>
-<section id="tutorial-2-inputs-outputs-reactive-wiring" class="level1">
-<h1>Tutorial 2 — Inputs → Outputs (reactive wiring)</h1>
-<p><strong>Goal.</strong> Add one input in the <strong>sidebar</strong> and echo it in the <strong>body</strong>.</p>
-<section id="steps-try-first-1" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-1">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo2_inputs_outputs_min.R</code>.</li>
-<li><strong>Copy</strong> your Tutorial 1 UI structure; keep the header and empty sidebar/body.</li>
-<li>In the <strong>sidebar</strong>, add a dropdown: <code>selectInput("sex", "Sex", ...)</code> with two choices.</li>
-<li>In the <strong>body</strong>, add a text area to display the current selection.</li>
-<li>In <strong>server</strong>, read <code>input$sex</code> and display it.<br>
-<em>Hint:</em> Concatenate a label with the input value.</li>
-<li><strong>Run</strong> and toggle the dropdown; verify the text changes live.</li>
-<li><strong>Change the default</strong> selection and confirm initial state updates.</li>
-<li><strong>Add a helper label</strong> above the output (e.g., <code>p("Selected:")</code>) to teach semantics.</li>
-<li><strong>Switch</strong> the output widget (<code>verbatimTextOutput</code> vs <code>textOutput</code>); notice any styling changes.</li>
-<li><strong>Introduce a second input</strong> (e.g., <code>numericInput("age", ...)</code>) and <strong>do not wire it</strong> yet.</li>
-<li><strong>Plan naming</strong>: agree on a simple convention for inputs (<code>sex</code>, <code>age</code>) and outputs (<code>echo</code>, <code>hello_text</code>). Write it down in comments.</li>
-<li><strong>Save</strong> and commit (if using git): message “demo2 wiring”.</li>
-</ol>
-</section>
-<section id="hints-tips-1" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-1">Hints &amp; tips</h2>
+<section id="consolidate-with-a-reactive-single-source-of-truth" class="level1">
+<h1>2) Consolidate with a <code>reactive()</code> (single source of truth)</h1>
+<p><strong>Matches:</strong> Demo 2 (unify via reactive) <strong>Goal.</strong> Compute the numeric risk <strong>once</strong> in a <code>reactive()</code> and <strong>reuse</strong> it.</p>
+<section id="do-this-1" class="level3">
+<h3 class="anchored" data-anchor-id="do-this-1">Do this</h3>
 <ul>
-<li>Match <strong>output IDs</strong>: UI’s <code>"echo"</code> ↔︎ server’s <code>output$echo</code>.</li>
-<li>Renderers are <strong>typed</strong>: text, print, plot, table, image, UI, etc.</li>
-<li>Don’t over-abstract early. Keep it literal for teaching.</li>
-</ul>
-</section>
-<section id="reading-1" class="level2">
-<h2 class="anchored" data-anchor-id="reading-1">Reading</h2>
+<li><p><strong>Server</strong></p>
 <ul>
-<li>Input widgets gallery: https://shiny.posit.co/r/gallery/widgets/</li>
-<li>Reactivity overview: https://shiny.posit.co/r/articles/build/reactivity-overview/</li>
-<li>Render functions reference: https://shiny.posit.co/r/reference/shiny/latest/</li>
+<li>Add <code>risk_val &lt;- reactive({ /* read select_* inputs; compute and return risk in [0,1] */ })</code>.</li>
+<li>Update the risk box to use <code>pct &lt;- round(100 * risk_val(), 1)</code>.</li>
+<li>Add interpretation line: <code>output$risk_text &lt;- renderText({ /* threshold on pct */ })</code>.</li>
+</ul></li>
+<li><p><strong>Body</strong></p>
+<ul>
+<li>If not present yet, add <code>textOutput("risk_text")</code> right under the risk box.</li>
+</ul></li>
 </ul>
+<p><strong>Why:</strong> Avoids duplication and shows how multiple outputs can depend on the same calculation.</p>
+<p><strong>Refs:</strong> Reactivity overview <a href="https://shiny.posit.co/r/articles/build/reactivity-overview/">https://shiny.posit.co/r/articles/build/reactivity-overview/</a> • Mastering Shiny (Reactivity) <a href="https://mastering-shiny.org/reactivity-basics.html">https://mastering-shiny.org/reactivity-basics.html</a></p>
 <hr>
 </section>
 </section>
-<section id="tutorial-3-layout-with-shinydashboard" class="level1">
-<h1>Tutorial 3 — Layout with {shinydashboard}</h1>
-<p><strong>Goal.</strong> Build the core layout: header / sidebar / body + rows, boxes, and a KPI.</p>
-<section id="steps-try-first-2" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-2">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo3_layout_dashboard.R</code>.</li>
-<li>Add <code>dashboardHeader(titleWidth = 250)</code> to avoid truncation.</li>
-<li><strong>Keep</strong> the <code>selectInput("sex", ...)</code> from Tutorial 2.</li>
-<li><strong>Add</strong> a <code>numericInput("age", ...)</code> in the <strong>sidebar</strong>.</li>
-<li>In the <strong>body</strong>, first row: add a <code>valueBoxOutput("kpi", width = 4)</code>.</li>
-<li>In the <strong>body</strong>, second row: add a <code>box(title = "Main area", solidHeader = TRUE, width = 12)</code>.</li>
-<li>In <strong>server</strong>, send a simple value into the <code>kpi</code> (e.g., the entered age with a label).<br>
-<em>Hint:</em> <code>renderValueBox(valueBox(...))</code>.</li>
-<li><strong>Run</strong> and tweak <code>titleWidth</code> to see header behavior (e.g., 300).</li>
-<li><strong>Experiment</strong> with <code>width</code> values to understand Bootstrap’s 12-column grid.</li>
-<li><strong>Add</strong> a paragraph in the box to mark where charts/tables will live.</li>
-<li><strong>Consider</strong> putting the <code>valueBox</code> inside a <code>box</code>. Decide which you prefer visually.</li>
-<li><strong>Save</strong> changes with a note: “demo3 layout + KPI”.</li>
-</ol>
-</section>
-<section id="hints-tips-2" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-2">Hints &amp; tips</h2>
+<section id="built-in-theming-tiny-css-optional" class="level1">
+<h1>3) Built-in theming + tiny CSS (optional)</h1>
+<p><strong>Matches:</strong> Demo 3 (skin + minimal CSS) <strong>Goal.</strong> Use <strong>shinydashboard</strong> skins first; add only <strong>tiny</strong> CSS.</p>
+<section id="do-this-2" class="level3">
+<h3 class="anchored" data-anchor-id="do-this-2">Do this</h3>
 <ul>
-<li>Use <code>fluidRow()</code> to organize horizontal groups.</li>
-<li><code>valueBox(color=...)</code> is separate from <code>box(status=...)</code> (colors later in Tutorial 7).</li>
-<li>Keep early layouts <strong>boring</strong>—clarity beats cleverness.</li>
-</ul>
-</section>
-<section id="reading-2" class="level2">
-<h2 class="anchored" data-anchor-id="reading-2">Reading</h2>
+<li><p><strong>UI</strong></p>
 <ul>
-<li>shinydashboard guide: https://rstudio.github.io/shinydashboard/</li>
-<li>Value boxes &amp; info boxes: https://rstudio.github.io/shinydashboard/structure.html#value-boxes</li>
-<li>Shiny layout guide: https://shiny.posit.co/r/articles/build/layout-guide/</li>
+<li>In <code>dashboardPage()</code>, set <code>skin = "green"</code> (try a few).</li>
+<li>In the risk box, add <code>status = "primary"</code> and <code>solidHeader = TRUE</code>.</li>
+<li>Make the header fit: <code>dashboardHeader(titleWidth = 270)</code> (adjust as needed).</li>
+</ul></li>
+<li><p><strong>Body head</strong></p>
+<ul>
+<li>(Optional) Add tiny CSS: <code>tags$head(tags$style(HTML(".small-muted{font-size:90%;color:#555}")))</code></li>
+<li>Use it on a one-line model note under the outputs.</li>
+</ul></li>
 </ul>
+<p><strong>Why:</strong> Consistent color without diving into custom CSS.</p>
+<p><strong>Refs:</strong> Appearance/skins <a href="https://rstudio.github.io/shinydashboard/appearance.html">https://rstudio.github.io/shinydashboard/appearance.html</a> • Layout guide <a href="https://shiny.posit.co/r/articles/build/layout-guide/">https://shiny.posit.co/r/articles/build/layout-guide/</a></p>
 <hr>
 </section>
 </section>
-<section id="tutorial-4-reactivity-filtering" class="level1">
-<h1>Tutorial 4 — Reactivity &amp; Filtering</h1>
-<p><strong>Goal.</strong> Create a <code>reactive()</code> that filters data and draw from it.</p>
-<section id="steps-try-first-3" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-3">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo4_reactivity_filtering.R</code>.</li>
-<li>At the top, generate tiny demo data (sex + sysbp). Keep it <strong>inside</strong> the script.</li>
-<li>In the <strong>sidebar</strong>, add <code>selectInput("select_sex", "Sex", c("All","Male","Female"), "All")</code>.</li>
-<li>In the <strong>body</strong>, add a <code>plotOutput("hist", height = 320)</code> for the histogram.</li>
-<li>In <strong>server</strong>, define <code>data_filtered &lt;- reactive({ ... })</code> using the input.</li>
-<li>Implement the <strong>“All” pattern</strong>: if “All”, return the unfiltered data.</li>
-<li>Draw the histogram of <code>sysbp</code>, filling by <code>sex</code>.<br>
-<em>Hint:</em> Set <code>binwidth = 5</code> to start.</li>
-<li><strong>Run</strong> and change the filter. Confirm the plot updates instantly.</li>
-<li>Add a <strong>second input</strong> (e.g., a <code>sliderInput</code> for <code>sysbp</code> range); plan where filtering logic should live.</li>
-<li><strong>Refactor</strong>: keep <strong>all</strong> filtering in the one <code>reactive()</code> so charts/tables can reuse it later.</li>
-<li><strong>Comment</strong> the reactive: note what inputs it depends on.</li>
-<li>Commit: “demo4 reactive filter + plot”.</li>
-</ol>
-</section>
-<section id="hints-tips-3" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-3">Hints &amp; tips</h2>
+<section id="estimate-risk-button-csv-download" class="level1">
+<h1>4) “Estimate risk” button + CSV download</h1>
+<p><strong>Matches:</strong> Demo 4 (eventReactive + download) <strong>Goal.</strong> Compute <strong>only when clicked</strong> and offer a <strong>CSV</strong> of the current inputs (plus last risk).</p>
+<section id="do-this-3" class="level3">
+<h3 class="anchored" data-anchor-id="do-this-3">Do this</h3>
 <ul>
-<li>Keep <strong>reusable reactives</strong> for data prepared for the view layer.</li>
-<li>Use <code>req()</code> inside renderers if you ever gate against missing inputs.</li>
-<li>Avoid deriving columns in the plot call; precompute in the reactive if needed.</li>
-</ul>
-</section>
-<section id="reading-3" class="level2">
-<h2 class="anchored" data-anchor-id="reading-3">Reading</h2>
+<li><p><strong>Sidebar</strong></p>
 <ul>
-<li>Reactivity concepts: https://shiny.posit.co/r/articles/build/reactivity-overview/</li>
-<li><em>Mastering Shiny</em> (Reactive): https://mastering-shiny.org/reactivity-basics.html</li>
-<li>dplyr filter: https://dplyr.tidyverse.org/reference/filter.html</li>
+<li>Add <code>actionButton("estimate", "Estimate risk", icon = icon("play"))</code>.</li>
+</ul></li>
+<li><p><strong>Server</strong></p>
+<ul>
+<li>Change <code>risk_val &lt;- reactive({...})</code> to <code>risk_val &lt;- eventReactive(input$estimate, { /* compute risk */ }, ignoreInit = TRUE)</code>.</li>
+<li>Show a placeholder in the risk box <strong>before first click</strong> (e.g., “—” with info icon).</li>
+<li>Add <code>downloadHandler</code> to export a <strong>1-row CSV</strong> with all <strong>current</strong> <code>select_*</code> inputs and the last <code>risk_pct</code>.</li>
+</ul></li>
+<li><p><strong>Body</strong></p>
+<ul>
+<li>Add <code>downloadButton("dl_inputs", "Download current inputs (CSV)")</code> below the outputs.</li>
+</ul></li>
 </ul>
+<p><strong>Why:</strong> Great for teaching “compute on demand” and reproducible exports.</p>
+<p><strong>Refs:</strong> <code>eventReactive</code> <a href="https://shiny.posit.co/r/reference/shiny/latest/eventReactive.html">https://shiny.posit.co/r/reference/shiny/latest/eventReactive.html</a> • Downloads <a href="https://shiny.posit.co/r/articles/build/download.html">https://shiny.posit.co/r/articles/build/download.html</a></p>
 <hr>
 </section>
 </section>
-<section id="tutorial-5-display-components-plots-tables-value-boxes" class="level1">
-<h1>Tutorial 5 — Display components: plots, tables, value boxes</h1>
-<p><strong>Goal.</strong> Present filtered data in three ways and separate static vs dynamic text.</p>
-<section id="steps-try-first-4" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-4">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo5_display_components.R</code>.</li>
-<li>Keep the tiny <code>df</code> and <code>select_sex</code> from Tutorial 4.</li>
-<li>In <strong>body row 1</strong>, add <code>valueBoxOutput("kpi", width = 4)</code>.</li>
-<li>In <strong>body row 2</strong>, add <code>box(plotOutput("hist", height = 280), width = 12)</code>.</li>
-<li>In <strong>body row 3</strong>, add <code>box(DT::DTOutput("tbl"), width = 12)</code>.</li>
-<li>In <strong>server</strong>, reuse <code>data_filtered()</code> from Tutorial 4.</li>
-<li><strong>KPI idea:</strong> show <code>nrow(data_filtered())</code> for now (simple count).</li>
-<li><strong>Plot:</strong> reuse the histogram from Tutorial 4; keep it minimal.</li>
-<li><strong>Table:</strong> render the filtered data with <code>DT::datatable()</code>; set <code>pageLength = 8</code>.</li>
-<li><strong>Static note:</strong> add <code>p("Static note: histogram uses binwidth = 5")</code> under the components.</li>
-<li><strong>Dynamic note:</strong> add <code>textOutput("dynamic_note")</code> and display current <code>select_sex</code>.</li>
-<li>Decide where you’d eventually put <strong>color logic</strong> (e.g., thresholds) for KPIs.</li>
-</ol>
-</section>
-<section id="hints-tips-4" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-4">Hints &amp; tips</h2>
+<section id="tabs-plotly-dt" class="level1">
+<h1>5) Tabs + Plotly + DT</h1>
+<p><strong>Matches:</strong> Demo 5 (tabs + plotly + datatable) <strong>Goal.</strong> Add tabs (“Risk” and “Explore”). Keep the calculator; show a chart and a table.</p>
+<section id="do-this-4" class="level3">
+<h3 class="anchored" data-anchor-id="do-this-4">Do this</h3>
 <ul>
-<li>DT’s <code>scrollX = TRUE</code> helps wide data; avoid 100 columns on screen.</li>
-<li>Keep “static vs dynamic” messaging clear to learners.</li>
-<li>Use <code>labs()</code> early to build labeling habits.</li>
-</ul>
-</section>
-<section id="reading-4" class="level2">
-<h2 class="anchored" data-anchor-id="reading-4">Reading</h2>
+<li><p><strong>Sidebar</strong></p>
 <ul>
-<li>DT package: https://rstudio.github.io/DT/</li>
-<li>ggplot2 basics: https://ggplot2.tidyverse.org/</li>
-<li>Outputs overview: https://shiny.posit.co/r/articles/build/outputs/</li>
+<li>Wrap controls in <code>sidebarMenu(id="tabs", menuItem("Risk Calculator", tabName="risk", icon=icon("heartbeat")), menuItem("Explore (Static)", tabName="explore", icon=icon("chart-line")))</code>.</li>
+<li>Keep inputs visible below the menu.</li>
+</ul></li>
+<li><p><strong>Body</strong></p>
+<ul>
+<li><p>Add <code>tabItems()</code> with <code>tabItem(tabName="risk", ...)</code> and <code>tabItem(tabName="explore", ...)</code>.</p></li>
+<li><p>Move the <strong>risk box + interpretation</strong> into <code>"risk"</code>.</p></li>
+<li><p>In <code>"explore"</code>:</p>
+<ul>
+<li>Box 1: <code>plotlyOutput("p1")</code> (age vs SBP scatter).</li>
+<li>Box 2: <code>plotlyOutput("p2")</code> (smoking counts).</li>
+<li>Box 3: <code>DTOutput("tbl")</code> (full dataset).</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Server</strong></p>
+<ul>
+<li><code>p1</code>: simple ggplot scatter → <code>ggplotly()</code>.</li>
+<li><code>p2</code>: derive “Current/Ex/Never” from your smoking flags and plot bars → <code>ggplotly()</code>.</li>
+<li><code>tbl</code>: <code>datatable(df, options = list(pageLength = 10, scrollX = TRUE))</code>.</li>
+</ul></li>
 </ul>
+<p><strong>Note on IDs:</strong> Demo 5 uses <code>rc_*</code> IDs to mirror the final app. If you keep your <code>select_*</code> IDs, just use them consistently (or rename once).</p>
+<p><strong>Refs:</strong> Plotly R <a href="https://plotly.com/r/">https://plotly.com/r/</a> • DT docs <a href="https://rstudio.github.io/DT/">https://rstudio.github.io/DT/</a> • shinydashboard structure <a href="https://rstudio.github.io/shinydashboard/">https://rstudio.github.io/shinydashboard/</a></p>
 <hr>
 </section>
 </section>
-<section id="tutorial-6-interactions-notifications-modals-downloads" class="level1">
-<h1>Tutorial 6 — Interactions: notifications, modals, downloads</h1>
-<p><strong>Goal.</strong> Add 3 interaction primitives without complicating UI.</p>
-<section id="steps-try-first-5" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-5">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo6_interactions_min.R</code>.</li>
-<li>Keep the tiny <code>df</code> and <code>select_sex</code> filter.</li>
-<li><strong>Add a button</strong> in the sidebar: <code>actionButton("about", "About model")</code>.</li>
-<li><strong>Add a download</strong> in the sidebar: <code>downloadButton("dl", "Download filtered CSV")</code>.</li>
-<li>In the <strong>body</strong>, keep <code>DTOutput("tbl")</code> to preview data to be downloaded.</li>
-<li>In <strong>server</strong>, show a <strong>notification</strong> whenever <code>select_sex</code> changes.<br>
-<em>Hint:</em> <code>observeEvent(input$select_sex, ...)</code>.</li>
-<li>Add a <strong>modal</strong> that opens when “About model” is clicked.<br>
-<em>Hint:</em> Use <code>showModal(modalDialog(...))</code>.</li>
-<li>Implement a <strong>CSV download</strong> for <code>data_filtered()</code> with <code>downloadHandler(...)</code>.</li>
-<li>Add a <strong>reset</strong> button (or link) that sets <code>select_sex</code> back to <code>"All"</code> via <code>updateSelectInput(...)</code>.</li>
-<li>Keep <strong>messages short</strong> (1–2 lines) so they don’t distract from content.</li>
-<li>Test all three interactions in combination.</li>
-<li>Commit: “demo6 interactions”.</li>
-</ol>
-</section>
-<section id="hints-tips-5" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-5">Hints &amp; tips</h2>
+<section id="deployment-minimal-one-page-shinylive-shinyapps.io" class="level1">
+<h1>6) Deployment: minimal one-page (Shinylive &amp; shinyapps.io)</h1>
+<p><strong>Matches:</strong> Demo 6 (minimal deployable) <strong>Goal.</strong> Strip back to the <strong>minimal one-page</strong> risk calculator for hosting.</p>
+<section id="do-this-5" class="level3">
+<h3 class="anchored" data-anchor-id="do-this-5">Do this</h3>
 <ul>
-<li>Use notifications for <strong>state changes</strong>; modals for <strong>explanations</strong> or <strong>confirmations</strong>.</li>
-<li>Keep download filenames simple: prefix + date.</li>
-<li>Always prefer <strong>filtered</strong> data for downloads (what users see is what they get).</li>
-</ul>
-</section>
-<section id="reading-5" class="level2">
-<h2 class="anchored" data-anchor-id="reading-5">Reading</h2>
+<li><p><strong>Keep only</strong>: <code>shiny</code>, <code>shinydashboard</code>, plus what <code>cleaning.R</code> needs (<code>readr</code>, <code>dplyr</code>, <code>tidyr</code>).</p></li>
+<li><p><strong>One page</strong>: sidebar with the 9 inputs; body with one <code>box</code> containing:</p>
 <ul>
-<li>Notifications: https://shiny.posit.co/r/reference/shiny/latest/showNotification.html</li>
-<li>Modal dialogs: https://shiny.posit.co/r/reference/shiny/latest/modalDialog.html</li>
-<li>Download handlers: https://shiny.posit.co/r/articles/build/download.html</li>
+<li><code>valueBoxOutput("risk_box")</code></li>
+<li><code>textOutput("risk_text")</code></li>
+</ul></li>
+<li><p><strong>Compute twice</strong> (value box + text) <strong>explicitly</strong> for teaching clarity.</p></li>
+<li><p><strong>No tabs/plotly/DT</strong> here.</p></li>
+<li><p><strong>Shinylive:</strong> ensure <code>cleaning.R</code> is <strong>CSV-first</strong>; bundle with r-shinylive workflow.</p></li>
+<li><p><strong>shinyapps.io:</strong> <code>rsconnect::deployApp()</code> after login.</p></li>
 </ul>
+<p><strong>Refs:</strong> Shinylive <a href="https://github.com/posit-dev/r-shinylive">https://github.com/posit-dev/r-shinylive</a> • shinyapps.io intro <a href="https://docs.posit.co/shinyapps.io/getting_started/">https://docs.posit.co/shinyapps.io/getting_started/</a></p>
 <hr>
 </section>
-</section>
-<section id="tutorial-7-theming-with-shinydashboard-builtin-skins-first" class="level1">
-<h1>Tutorial 7 — Theming with shinydashboard (built‑in skins first)</h1>
-<p><strong>Goal.</strong> Apply built-in colors without custom CSS; learn status and color args.</p>
-<section id="steps-try-first-6" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-6">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo7_theme_builtin.R</code>.</li>
-<li>In <code>dashboardPage()</code>, set <code>skin = "green"</code> (or try others later).</li>
-<li>Add a <strong>header titleWidth</strong> that fits your title (e.g., 260–300).</li>
-<li>In the <strong>body</strong>, create two <code>box()</code> components with different <code>status</code> values (<code>"primary"</code>, <code>"warning"</code>).<br>
-<em>Hint:</em> Use <code>solidHeader = TRUE</code>.</li>
-<li>Add a <code>valueBoxOutput("kpi", width = 4)</code> and plan a <strong>color</strong> (e.g., <code>"green"</code>).</li>
-<li>Explore the <strong>allowed <code>valueBox(color=...)</code> values</strong> and pick one that reads clearly.</li>
-<li>Compare <code>valueBox(color=...)</code> vs <code>box(status=...)</code>: where do these colors appear?</li>
-<li>Try another <strong>skin</strong> (e.g., <code>"red"</code>); note which layout regions change color.</li>
-<li>Document a <strong>color scheme</strong> for your course (which statuses mean what).</li>
-<li>Keep color usage <strong>consistent</strong> across KPIs and boxes.</li>
-<li>Avoid overusing strong colors (e.g., <code>danger</code>) unless signaling error/alert.</li>
-<li>Commit: “demo7 theming (built-in)”.</li>
-</ol>
-</section>
-<section id="hints-tips-6" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-6">Hints &amp; tips</h2>
+<section id="quick-guardrails-for-learners" class="level2">
+<h2 class="anchored" data-anchor-id="quick-guardrails-for-learners">Quick guardrails for learners</h2>
 <ul>
-<li>Skins affect <strong>header/sidebar</strong>; statuses affect <strong>box headers</strong>.</li>
-<li><code>valueBox</code> colors use a predefined palette; pick legible combos.</li>
-<li>Save CSS for later if you still need polish.</li>
-</ul>
-</section>
-<section id="reading-6" class="level2">
-<h2 class="anchored" data-anchor-id="reading-6">Reading</h2>
-<ul>
-<li>Skins &amp; colors: https://rstudio.github.io/shinydashboard/appearance.html</li>
-<li>Icons: https://shiny.posit.co/r/reference/shiny/latest/icon.html</li>
-<li>Layout guide: https://shiny.posit.co/r/articles/build/layout-guide/</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="tutorial-8-final-onepage-calculato" class="level1">
-<h1>Tutorial 8 — Final one‑page calculato</h1>
-<p><strong>Goal.</strong> Assemble the final app: inputs on left, risk on right; CSV-first via <code>cleaning.R</code>.</p>
-<section id="steps-try-first-7" class="level2">
-<h2 class="anchored" data-anchor-id="steps-try-first-7">Steps (try-first)</h2>
-<ol type="1">
-<li><strong>Create</strong> <code>demo8_final_dadr_onepage.R</code> in the same folder.</li>
-<li>Add <strong>plain library calls</strong>: <code>shiny</code>, <code>shinydashboard</code>, and (for <code>cleaning.R</code>) <code>readr</code>, <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>At the top, <code>source("cleaning.R", local = TRUE)</code>. Confirm that it creates <strong><code>df</code></strong> with required fields.</li>
-<li>Use <code>dashboardPage(skin = "blue", ...)</code> as your shell.</li>
-<li>In the <strong>sidebar</strong> (width 300), add <strong>Risk Inputs</strong> with the <code>rc_</code> IDs:<br>
-<code>rc_sex</code>, <code>rc_smoking</code>, <code>rc_diabetes</code>, <code>rc_famhx</code>, <code>rc_age</code>, <code>rc_sysbp</code>, <code>rc_totchol</code>, <code>rc_hdl</code>, <code>rc_cd4</code>.</li>
-<li>For numeric inputs, set defaults to your <strong>data medians</strong> (see your target app).</li>
-<li>In the <strong>body</strong>, add a <code>box(title = "Predicted Risk ()", solidHeader = TRUE, width = 12)</code>.</li>
-<li>Inside the box, place a <code>valueBoxOutput("risk_box")</code> and a <code>textOutput("risk_text")</code> below it.</li>
-<li>In <strong>server</strong>, compute the <strong>same risk</strong> twice: once for the KPI, once for the interpretation (keep explicit for teaching).</li>
-<li>Clamp risk to <code>[0, 0.999]</code>. Pick KPI color rules: <strong>red ≥20</strong>, <strong>yellow ≥10</strong>, else <strong>green</strong>.</li>
-<li>Add a one‑line model summary in the UI (terms used), under the interpretation.</li>
-<li><strong>Optional polish:</strong> link a <code>custom.css</code> via <code>tags$head(tags$link(...))</code> — only if you truly need it.</li>
-<li><strong>Run</strong> and confirm all inputs drive both outputs; test extreme values.</li>
-<li><strong>Plan deployment</strong>: Shinylive export vs shinyapps.io.</li>
-<li>Commit: “demo8 final one‑page”.</li>
-</ol>
-</section>
-<section id="hints-tips-7" class="level2">
-<h2 class="anchored" data-anchor-id="hints-tips-7">Hints &amp; tips</h2>
-<ul>
-<li><strong>Explicit formulas</strong> beat abstractions when teaching (students can see every term).</li>
-<li>Duplicating the calc twice (KPI + text) helps show <strong>independent outputs</strong> sharing the <strong>same inputs</strong>.</li>
-<li>CSV‑first data loading works great for <strong>Shinylive</strong> (static hosting).</li>
-</ul>
-</section>
-<section id="reading-7" class="level2">
-<h2 class="anchored" data-anchor-id="reading-7">Reading</h2>
-<ul>
-<li>Shinylive export: https://github.com/posit-dev/r-shinylive</li>
-<li>shinyapps.io deploy: https://docs.posit.co/shinyapps.io/getting_started/</li>
-<li>Shiny articles (build &amp; deploy): https://shiny.posit.co/r/articles/</li>
+<li><strong>Consistent IDs:</strong> If you start with <code>select_*</code>, stick with it (or rename once to <code>rc_*</code> when moving to the tabbed version).</li>
+<li><strong>Numeric safety:</strong> Coerce inputs and keep sensible mins for any <code>log(...)</code> terms (e.g., HDL &gt; 0).</li>
+<li><strong>Thresholds:</strong> Document the red/yellow/green cutoffs near the risk display for clarity.</li>
 </ul>
 
 
